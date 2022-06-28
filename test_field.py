@@ -19,7 +19,7 @@ def test_to_and_from_montgomery_repr():
         assert num == num_, f'expeted {num}, found {num_}'
 
 
-def test_multiplication():
+def test_field_multiplication():
     '''
     Test if modular multiplication of two randomly generated secp256k1 prime field elements, using Montgomery algorithm,
     is behaving as expected
@@ -37,7 +37,7 @@ def test_multiplication():
         assert c == c_, f'expected {c}, found {c_}'
 
 
-def test_addition():
+def test_field_addition():
     '''
     Test if modular addition of two randomly generated secp256k1 prime field elements, using Montgomery algorithm,
     is behaving as expected
@@ -55,7 +55,7 @@ def test_addition():
         assert c == c_, f'expected {c}, found {c_}'
 
 
-def test_subtraction():
+def test_field_subtraction():
     '''
     Test if modular subtraction of two randomly generated secp256k1 prime field elements, using Montgomery algorithm,
     is behaving as expected
@@ -73,7 +73,7 @@ def test_subtraction():
         assert c == c_, f'expected {c}, found {c_}'
 
 
-def test_inversion():
+def test_field_inversion():
     '''
     Test if modular multiplicative inversion of one randomly generated secp256k1 prime field element, in Montgomery representation,
     is behaving as expected

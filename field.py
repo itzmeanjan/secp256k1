@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+from functools import reduce
 from typing_extensions import Self
 from utils import *
 
@@ -41,6 +42,10 @@ class Field:
         as radix-r form | r = 2^32
         '''
         return from_montgomery(self._limbs)
+
+    def __eq__(self, rhs: Self) -> bool:
+        tmp = [bool(self._limbs[i] ^ rhs._limbs[i]) for i in range(LIMB_COUNT)]
+        return not reduce(lambda acc, cur: acc | cur, tmp, False)
 
     def __mul__(self, rhs: Self) -> Self:
         '''
@@ -112,3 +117,15 @@ class Field:
             return res
 
         return Field(pow(self._limbs, to_radix_r(PRIME-2)))
+
+    def __repr__(self) -> str:
+        '''
+        Pretty print on console
+        '''
+        return f'Fp({self.to_num()}, {PRIME})'
+
+    def __str__(self) -> str:
+        '''
+        Display when printed to stdout/ file
+        '''
+        return f'{self.to_num()}'

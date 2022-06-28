@@ -30,7 +30,7 @@ def calculate_mu() -> int:
     return RADIX - y
 
 
-# = p; See https://en.bitcoin.it/wiki/Secp256k1
+# prime, see section 2.4.1 of https://www.secg.org/sec2-v2.pdf#page=13
 PRIME: int = 0x_FFFFFFFF_FFFFFFFF_FFFFFFFF_FFFFFFFF_FFFFFFFF_FFFFFFFF_FFFFFFFE_FFFFFC2F
 PRIME_BIT_LEN: int = bit_count(PRIME)
 # can be rewritten using uint32_t data type of C
@@ -44,4 +44,12 @@ R: int = (RADIX ** LIMB_COUNT) % PRIME
 R2: int = (R * R) % PRIME
 MU: int = calculate_mu()
 
+# scalar, see section 2.4.1 of https://www.secg.org/sec2-v2.pdf#page=13
+n = 2 ** 256 - 432420386565659656852420866394968145599
+# curve generator point x, see section 2.4.1 of https://www.secg.org/sec2-v2.pdf#page=13
+Gx = 55066263022277343669578718895168534326250603453777594175500187360389116729240
+# curve generator point y, , see section 2.4.1 of https://www.secg.org/sec2-v2.pdf#page=13
+Gy = 32670510020758816978083085130507043184471273380659243275938904335757337482424
+
+# execute test cases for these many rounds
 TEST_CNT: int = 1 << 10
