@@ -4,6 +4,42 @@ from consts import *
 from typing import List, Tuple
 
 
+def modulo(a: int, b: int = PRIME) -> int:
+    '''
+    Computes canonical representation of field element `a`, see https://paulmillr.com/posts/noble-secp256k1-fast-ecc/#public-keys
+    '''
+    res = a % b
+    if res >= 0:
+        return res
+    else:
+        return b + res
+
+
+def mul_inv(num: int, mod: int = PRIME) -> int:
+    '''
+    Computes multiplicative inverse of prime field element a | a * a_inv = 1,
+    using extended GCD algorithm, see https://aszepieniec.github.io/stark-anatomy/basic-tools
+    '''
+    if num == 0 or mod <= 0:
+        raise Exception("can't invert multiplicative identity 0")
+
+    old_r, r = (mod, modulo(num, mod))
+    old_s, s = (1, 0)
+    old_t, t = (0, 1)
+
+    while r != 0:
+        quotient = old_r // r
+        old_r, r = (r, old_r - quotient * r)
+        old_s, s = (s, old_s - quotient * s)
+        old_t, t = (t, old_t - quotient * t)
+
+    if old_r != 1:
+        raise Exception("failed to find multiplicative inverse")
+
+    # (old_s, old_t, old_r) | a, b, g of `ax + by = g`
+    return modulo(old_s, mod)
+
+
 def to_radix_r(num: int) -> List[int]:
     '''
     Converts large integer ( 256 -bit ) to radix-r interleaved representation | r = 2^32
