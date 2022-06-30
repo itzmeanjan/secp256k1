@@ -38,6 +38,13 @@ class Point:
         return (x1 == x2) & (y1 == y2)
 
     @classmethod
+    def zero(cls) -> Self:
+        '''
+        Identity element of group, see https://github.com/dusk-network/bls12_381/blob/2c679a2/src/g1.rs#L587-L593
+        '''
+        return cls(Field.from_num(0), Field.from_num(1), Field.from_num(0))
+
+    @classmethod
     def fromAffine(cls, x: Field, y: Field) -> Self:
         '''
         Given affine coordinate of secp256k1 elliptic curve point, this routine
@@ -163,3 +170,17 @@ class Point:
         x3 = x3 + x3
 
         return Point(x3, y3, z3)
+
+    def mulScalar(self, scalar: int) -> Self:
+        res = Point.zero()
+        tmp = self
+
+        idx = 0
+        while idx < 256:
+            if (scalar >> idx) & 1:
+                res += tmp
+
+            tmp = tmp.double()
+            idx += 1
+
+        return res
