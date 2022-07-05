@@ -102,14 +102,30 @@ def u256xu32(a: List[int], b: int, c: List[int]) -> List[int]:
     '''
     assert len(a) == (LIMB_COUNT + 1) and len(c) == LIMB_COUNT
 
-    a[0], carry = mac(a[0], b, c[0], 0)
-    a[1], carry = mac(a[1], b, c[1], carry)
-    a[2], carry = mac(a[2], b, c[2], carry)
-    a[3], carry = mac(a[3], b, c[3], carry)
-    a[4], carry = mac(a[4], b, c[4], carry)
-    a[5], carry = mac(a[5], b, c[5], carry)
-    a[6], carry = mac(a[6], b, c[6], carry)
-    a[7], a[8] = mac(a[7], b, c[7], carry)
+    a_ = [0] * len(c)
+    carry = 0
+
+    a_[0], carry = mac(0, c[0], b, carry)
+    a_[1], carry = mac(0, c[1], b, carry)
+    a_[2], carry = mac(0, c[2], b, carry)
+    a_[3], carry = mac(0, c[3], b, carry)
+    a_[4], carry = mac(0, c[4], b, carry)
+    a_[5], carry = mac(0, c[5], b, carry)
+    a_[6], carry = mac(0, c[6], b, carry)
+    a_[7], a[8] = mac(0, c[7], b, carry)
+
+    carry = 0
+
+    a[0], carry = adc(a[0], a_[0], carry)
+    a[1], carry = adc(a[1], a_[1], carry)
+    a[2], carry = adc(a[2], a_[2], carry)
+    a[3], carry = adc(a[3], a_[3], carry)
+    a[4], carry = adc(a[4], a_[4], carry)
+    a[5], carry = adc(a[5], a_[5], carry)
+    a[6], carry = adc(a[6], a_[6], carry)
+    a[7], carry = adc(a[7], a_[7], carry)
+
+    a[8] += carry
 
     return a
 
