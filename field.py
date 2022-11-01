@@ -6,41 +6,41 @@ from utils import *
 
 
 class Field:
-    '''
+    """
     A field element of secp256k1 prime field, kept in Montgomery form
-    '''
+    """
 
     def __init__(self, limbs: List[int]):
         self._limbs = limbs
 
     @classmethod
     def from_num(cls, num: int) -> Self:
-        '''
+        """
         Given an element of secp256k1 prime field as integer, this routine returns
         it as field element in Montgomery form
-        '''
+        """
         return cls.from_radix_r(to_radix_r(num))
 
     def to_num(self) -> int:
-        '''
+        """
         Given field element in Montgomery form, this routine computes field element
         as integer
-        '''
+        """
         return from_radix_r(self.to_radix_r())
 
     @classmethod
     def from_radix_r(cls, limbs: List[int]) -> Self:
-        '''
+        """
         Given an element of secp256k1 prime field in radix-r form, this routine returns
         it as field element in Montgomery form | r = 2^32
-        '''
+        """
         return cls(to_montgomery(limbs))
 
     def to_radix_r(self) -> List[int]:
-        '''
+        """
         Given field element in Montgomery form, this routine computes field element
         as radix-r form | r = 2^32
-        '''
+        """
         return from_montgomery(self._limbs)
 
     def __eq__(self, rhs: Self) -> bool:
@@ -48,15 +48,15 @@ class Field:
         return not reduce(lambda acc, cur: acc | cur, tmp, False)
 
     def __mul__(self, rhs: Self) -> Self:
-        '''
+        """
         Modular multiplication of two secp256k1 field elements, input/ output in Montgomery form
-        '''
+        """
         return Field(montgomery_mul(self._limbs, rhs._limbs))
 
     def __add__(self, rhs: Self) -> Self:
-        '''
+        """
         Modular addition of two secp256k1 field elements, input/ output in Montgomery form
-        '''
+        """
         c = [0] * LIMB_COUNT
         carry = 0
 
@@ -69,15 +69,15 @@ class Field:
         c[6], carry = adc(self._limbs[6], rhs._limbs[6], carry)
         c[7], carry = adc(self._limbs[7], rhs._limbs[7], carry)
 
-        c[0] += (carry * 977)
+        c[0] += carry * 977
         c[1] += carry
 
         return Field(c)
 
     def __neg__(self) -> Self:
-        '''
+        """
         Negates a secp256k1 field element such that a + b = 0, if b = -a
-        '''
+        """
         P = to_radix_r(PRIME)
 
         c = [0] * LIMB_COUNT
@@ -95,15 +95,16 @@ class Field:
         return Field(c)
 
     def __sub__(self, rhs: Self) -> Self:
-        '''
+        """
         Modular subtraction of two secp256k1 elements, input/ output in Montgomery form
-        '''
+        """
         return self + (-rhs)
 
     def inv(self) -> Self:
-        '''
+        """
         Computes multiplicative inverse of secp256k1 field element
-        '''
+        """
+
         def pow(a: List[int], b: List[int]) -> List[int]:
             res = to_radix_r(R)
 
@@ -116,16 +117,20 @@ class Field:
 
             return res
 
-        return Field(pow(self._limbs, to_radix_r(PRIME-2)))
+        return Field(pow(self._limbs, to_radix_r(PRIME - 2)))
 
     def __repr__(self) -> str:
-        '''
+        """
         Pretty print on console
-        '''
-        return f'Fp({self.to_num()}, {PRIME})'
+        """
+        return f"Fp({self.to_num()}, {PRIME})"
 
     def __str__(self) -> str:
-        '''
+        """
         Display when printed to stdout/ file
-        '''
-        return f'{self.to_num()}'
+        """
+        return f"{self.to_num()}"
+
+
+if __name__ == "__main__":
+    print("Use `field` as library module")

@@ -5,9 +5,9 @@ from typing import List, Tuple
 
 
 def modulo(a: int, b: int = PRIME) -> int:
-    '''
+    """
     Computes canonical representation of field element `a`, see https://paulmillr.com/posts/noble-secp256k1-fast-ecc/#public-keys
-    '''
+    """
     res = a % b
     if res >= 0:
         return res
@@ -16,10 +16,10 @@ def modulo(a: int, b: int = PRIME) -> int:
 
 
 def mul_inv(num: int, mod: int = PRIME) -> int:
-    '''
+    """
     Computes multiplicative inverse of prime field element a | a * a_inv = 1,
     using extended GCD algorithm, see https://aszepieniec.github.io/stark-anatomy/basic-tools
-    '''
+    """
     if num == 0 or mod <= 0:
         raise Exception("can't invert multiplicative identity 0")
 
@@ -41,9 +41,9 @@ def mul_inv(num: int, mod: int = PRIME) -> int:
 
 
 def to_radix_r(num: int) -> List[int]:
-    '''
+    """
     Converts large integer ( 256 -bit ) to radix-r interleaved representation | r = 2^32
-    '''
+    """
     limbs = [0] * LIMB_COUNT
     idx = 0
     while num > 0:
@@ -54,52 +54,52 @@ def to_radix_r(num: int) -> List[int]:
 
 
 def from_radix_r(limbs: List[int]) -> int:
-    '''
+    """
     Converts radix-r interleaved representation, to large integer ( 256 -bit ) | r = 2^32
-    '''
+    """
     cnt = len(limbs)
     num = 0
-    for idx in range(cnt-1, -1, -1):
+    for idx in range(cnt - 1, -1, -1):
         num = num * RADIX + limbs[idx]
     return num
 
 
 def adc(a: int, b: int, carry: int) -> Tuple[int, int]:
-    '''
+    """
     See https://github.com/dusk-network/bls12_381/blob/ed4d87c6756c0020629edb5d8912a41e338ac85a/src/util.rs#L1-L6
-    '''
+    """
     tmp = a + b + carry
-    return tmp & (RADIX-1), tmp >> RADIX_BIT_LEN
+    return tmp & (RADIX - 1), tmp >> RADIX_BIT_LEN
 
 
 def mac(a: int, b: int, c: int, carry: int) -> Tuple[int, int]:
-    '''
+    """
     See https://github.com/dusk-network/bls12_381/blob/ed4d87c6756c0020629edb5d8912a41e338ac85a/src/util.rs#L15-L20
-    '''
+    """
     tmp = a + (b * c) + carry
-    return tmp & (RADIX-1), tmp >> RADIX_BIT_LEN
+    return tmp & (RADIX - 1), tmp >> RADIX_BIT_LEN
 
 
 def sbb(a: int, b: int, borrow: int) -> Tuple[int, int]:
-    '''
+    """
     See https://github.com/dusk-network/bls12_381/blob/2c679a284c008475b543a67ee2300ee58ffe5d11/src/util.rs#L8-L13
-    '''
+    """
     wrap_at = (RADIX << RADIX_BIT_LEN) - 1
-    tmp = (a - (b + (borrow >> (RADIX_BIT_LEN-1)))) % wrap_at
-    return tmp & (RADIX-1), tmp >> RADIX_BIT_LEN
+    tmp = (a - (b + (borrow >> (RADIX_BIT_LEN - 1)))) % wrap_at
+    return tmp & (RADIX - 1), tmp >> RADIX_BIT_LEN
 
 
 def bitwise_not(a: int) -> int:
-    '''
+    """
     Same as `!a` in C
-    '''
+    """
     return RADIX - 1 - a
 
 
 def u256xu32(a: List[int], b: int, c: List[int]) -> List[int]:
-    '''
+    """
     Collects inspiration from https://github.com/dusk-network/bls12_381/blob/ed4d87c6756c0020629edb5d8912a41e338ac85a/src/fp.rs#L517-L522
-    '''
+    """
     assert len(a) == (LIMB_COUNT + 1) and len(c) == LIMB_COUNT
 
     a_ = [0] * len(c)
@@ -131,10 +131,10 @@ def u256xu32(a: List[int], b: int, c: List[int]) -> List[int]:
 
 
 def montgomery_mul(a: List[int], b: List[int]) -> List[int]:
-    '''
+    """
     Inspired by https://github.com/dusk-network/bls12_381/blob/ed4d87c6756c0020629edb5d8912a41e338ac85a/src/fp.rs#L437-L560
     and algorithm 2 of https://eprint.iacr.org/2017/1057.pdf
-    '''
+    """
     assert len(a) == len(b)
 
     prime = to_radix_r(PRIME)
@@ -245,22 +245,26 @@ def montgomery_mul(a: List[int], b: List[int]) -> List[int]:
     c[14], carry = mac(c[14], q, prime[7], carry)
     c[15], pc = adc(c[15], pc, carry)
 
-    c[8] += (pc * 977)
+    c[8] += pc * 977
     c[9] += pc
 
     return c[8:16]
 
 
 def to_montgomery(a: List[int]) -> List[int]:
-    '''
+    """
     Just like https://github.com/dusk-network/bls12_381/blob/ed4d87c6756c0020629edb5d8912a41e338ac85a/src/fp.rs#L251-L253;
     for better understanding read section 2.2 of https://eprint.iacr.org/2017/1057.pdf
-    '''
+    """
     return montgomery_mul(a, to_radix_r(R2))
 
 
 def from_montgomery(a: List[int]) -> List[int]:
-    '''
+    """
     Read section 2.2 of https://eprint.iacr.org/2017/1057.pdf
-    '''
+    """
     return montgomery_mul(a, to_radix_r(1))
+
+
+if __name__ == "__main__":
+    print("Use `utils` as library module")
