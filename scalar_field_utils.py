@@ -50,7 +50,7 @@ def sbb(a: int, b: int, borrow: int) -> Tuple[int, int]:
     """
     See https://github.com/dusk-network/bls12_381/blob/2c679a2/src/util.rs#L8-L13
     """
-    wrap_at = (RADIX << RADIX_BIT_LEN) - 1
+    wrap_at = RADIX << RADIX_BIT_LEN
     tmp = (a - (b + (borrow >> (RADIX_BIT_LEN - 1)))) % wrap_at
     return tmp & (RADIX - 1), tmp >> RADIX_BIT_LEN
 

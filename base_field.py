@@ -135,4 +135,4 @@ class BaseField:
 
 
 if __name__ == "__main__":
-    print("Use `field` as library module")
+    print("Use `base_field` as library module")

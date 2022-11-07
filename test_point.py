@@ -1,8 +1,11 @@
 #!/usr/bin/python3
 
-from point import Point, Field
-from consts import TEST_CNT, Gx, Gy
+from point import Point, BaseField
+from scalar_field_consts import Gx, Gy
 from random import randint
+
+# execute test cases for these many rounds
+TEST_CNT: int = 1 << 5
 
 
 def random_point() -> Point:
@@ -10,7 +13,7 @@ def random_point() -> Point:
     Routine for generating random point on secp256k1 elliptic curve, while starting
     with curve generator points
     """
-    gen = Point.fromAffine(Field.from_num(Gx), Field.from_num(Gy))
+    gen = Point.fromAffine(BaseField.from_num(Gx), BaseField.from_num(Gy))
 
     itr = randint(0, 1 << 5)
     for _ in range(itr):

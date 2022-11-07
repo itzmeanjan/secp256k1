@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from typing_extensions import Self
-from field import Field
+from base_field import BaseField
 from typing import Tuple
 
 
@@ -10,7 +10,7 @@ class Point:
     A secp256k1 elliptic curve point, kept in projective coordinate system
     """
 
-    def __init__(self, x: Field, y: Field, z: Field):
+    def __init__(self, x: BaseField, y: BaseField, z: BaseField):
         self._x = x
         self._y = y
         self._z = z
@@ -42,17 +42,17 @@ class Point:
         """
         Identity element of group, see https://github.com/dusk-network/bls12_381/blob/2c679a2/src/g1.rs#L587-L593
         """
-        return cls(Field.from_num(0), Field.from_num(1), Field.from_num(0))
+        return cls(BaseField.from_num(0), BaseField.from_num(1), BaseField.from_num(0))
 
     @classmethod
-    def fromAffine(cls, x: Field, y: Field) -> Self:
+    def fromAffine(cls, x: BaseField, y: BaseField) -> Self:
         """
         Given affine coordinate of secp256k1 elliptic curve point, this routine
         returns equivalent point in projective coordinate system
         """
-        return Point(x, y, Field.from_num(1))
+        return Point(x, y, BaseField.from_num(1))
 
-    def toAffine(self) -> Tuple[Field, Field]:
+    def toAffine(self) -> Tuple[BaseField, BaseField]:
         """
         Given projective coordinate of secp256k1 elliptic curve point, this routine
         computes equivalent point in affine coordinate system
@@ -73,7 +73,7 @@ class Point:
         x2, y2, z2 = rhs._x, rhs._y, rhs._z
 
         b = 7
-        b3 = Field.from_num(3 * b)
+        b3 = BaseField.from_num(3 * b)
 
         t0 = x1 * x2
         t1 = y1 * y2
@@ -143,7 +143,7 @@ class Point:
         x, y, z = self._x, self._y, self._z
 
         b = 7
-        b3 = Field.from_num(3 * b)
+        b3 = BaseField.from_num(3 * b)
 
         t0 = y * y
         z3 = t0 + t0

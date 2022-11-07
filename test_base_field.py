@@ -2,8 +2,10 @@
 
 from base_field import BaseField
 from base_field_consts import P
-from consts import TEST_CNT
 from random import randint
+
+# execute test cases for these many rounds
+TEST_CNT: int = 1 << 5
 
 
 def test_montgomery_repr():
