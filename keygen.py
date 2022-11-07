@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from typing import Tuple
-from consts import PRIME, Gx, Gy
+from consts import Gx, Gy, n
 from point import Point
 from field import Field
 from secrets import randbelow
@@ -9,9 +9,9 @@ from secrets import randbelow
 
 def generate_secret_key() -> int:
     """
-    Generate a random ECDSA secret key, which is ∈ [0, p) | p = PRIME
+    Generate a random ECDSA secret key, which is ∈ [0, n)
     """
-    skey = randbelow(PRIME)
+    skey = randbelow(n)
     return skey
 
 
