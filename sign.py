@@ -3,10 +3,10 @@
 
 from typing import Tuple
 from hashlib import sha3_256
-from field import Field
+from base_field import BaseField
 from point import Point
 from secrets import randbelow
-from consts import Gx, Gy, n
+from scalar_field_consts import Gx, Gy, N
 
 
 def sign(skey: int, msg: bytes) -> Tuple[int, int]:
@@ -20,16 +20,16 @@ def sign(skey: int, msg: bytes) -> Tuple[int, int]:
     """
     h = sha3_256(msg).digest()
     h = int.from_bytes(h, byteorder="big")
-    h = h % n
+    h = h % N
 
-    k = 1 + randbelow(n - 1)
+    k = 1 + randbelow(N - 1)
 
-    g = Point.fromAffine(Field.from_num(Gx), Field.from_num(Gy))
+    g = Point.fromAffine(BaseField.from_num(Gx), BaseField.from_num(Gy))
     r = g.mulScalar(k)
     r = r.toAffine()[0].to_num()
 
-    k_inv = pow(k, -1, n)
-    s = ((h + r * skey) * k_inv) % n
+    k_inv = pow(k, -1, N)
+    s = ((h + r * skey) * k_inv) % N
 
     return r, s
 

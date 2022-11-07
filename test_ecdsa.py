@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 
 import ecdsa
-from consts import TEST_CNT
+
+# execute test cases for these many rounds
+TEST_CNT: int = 1 << 5
 
 
 def test_ecdsa():
@@ -10,12 +12,11 @@ def test_ecdsa():
     """
     msg = b"this is a message !"
 
-    for _ in range(TEST_CNT):
-        skey, pkey = ecdsa.keygen()
-        (r, s) = ecdsa.sign(skey, msg)
-        verified = ecdsa.verify(pkey, msg, (r, s))
+    skey, pkey = ecdsa.keygen()
+    (r, s) = ecdsa.sign(skey, msg)
+    verified = ecdsa.verify(pkey, msg, (r, s))
 
-        assert verified, "ECDSA signature verification failed"
+    assert verified, "ECDSA signature verification failed"
 
 
 if __name__ == "__main__":

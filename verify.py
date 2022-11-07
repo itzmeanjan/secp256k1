@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
 from typing import Tuple
-from consts import Gx, Gy, n
-from field import Field
+from scalar_field_consts import Gx, Gy, N
+from base_field import BaseField
 from point import Point
 from hashlib import sha3_256
 
@@ -20,14 +20,14 @@ def verify(pkey: Point, msg: bytes, sig: Tuple[int, int]) -> bool:
 
     h = sha3_256(msg).digest()
     h = int.from_bytes(h, byteorder="big")
-    h = h % n
+    h = h % N
 
-    s1 = pow(s, -1, n)
+    s1 = pow(s, -1, N)
 
-    t0 = (h * s1) % n
-    t1 = (r * s1) % n
+    t0 = (h * s1) % N
+    t1 = (r * s1) % N
 
-    g = Point.fromAffine(Field.from_num(Gx), Field.from_num(Gy))
+    g = Point.fromAffine(BaseField.from_num(Gx), BaseField.from_num(Gy))
 
     t2 = g.mulScalar(t0)
     t3 = pkey.mulScalar(t1)
