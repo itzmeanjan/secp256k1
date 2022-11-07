@@ -5,7 +5,7 @@ from scalar_field_consts import Gx, Gy
 from random import randint
 
 # execute test cases for these many rounds
-TEST_CNT: int = 1 << 5
+TEST_CNT: int = 1 << 9
 
 
 def random_point() -> Point:

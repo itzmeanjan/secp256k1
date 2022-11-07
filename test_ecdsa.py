@@ -2,9 +2,6 @@
 
 import ecdsa
 
-# execute test cases for these many rounds
-TEST_CNT: int = 1 << 5
-
 
 def test_ecdsa():
     """
