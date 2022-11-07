@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from math import ceil
-from utils import bit_count
+from . import bit_count
 
 
 def calculate_mu() -> int:

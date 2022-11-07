@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from typing_extensions import Self
-from base_field import BaseField
+from field import BaseField
 from typing import Tuple
 
 

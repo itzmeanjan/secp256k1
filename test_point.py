@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-from point import Point, BaseField
-from scalar_field_consts import Gx, Gy
+from point import Point
+from field import BaseField, Gx, Gy
 from random import randint
 
 # execute test cases for these many rounds

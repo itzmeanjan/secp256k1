@@ -2,12 +2,12 @@
 
 from functools import reduce
 from typing_extensions import Self
-from scalar_field_utils import *
+from .base_field_utils import *
 
 
-class ScalarField:
+class BaseField:
     """
-    A secp256k1 scalar field element, kept in Montgomery form
+    A secp256k1 base field element, kept in Montgomery form
     """
 
     def __init__(self, limbs: List[int]):
@@ -16,14 +16,14 @@ class ScalarField:
     @classmethod
     def from_num(cls, num: int) -> Self:
         """
-        Given an element of secp256k1 scalar field as integer, this routine converts
+        Given an element of secp256k1 base field as integer, this routine converts
         it to Montgomery form
         """
         return cls.from_radix_r(to_radix_r(num))
 
     def to_num(self) -> int:
         """
-        Given secp256k1 scalar field element in Montgomery form, this routine computes
+        Given secp256k1 base field element in Montgomery form, this routine computes
         it as an integer
         """
         return from_radix_r(self.to_radix_r())
@@ -31,36 +31,32 @@ class ScalarField:
     @classmethod
     def from_radix_r(cls, limbs: List[int]) -> Self:
         """
-        Given an element of secp256k1 scalar field in radix-r form, this routine returns
+        Given an element of secp256k1 base field in radix-r form, this routine returns
         it in Montgomery form | r = 2^32
         """
         return cls(to_montgomery(limbs))
 
     def to_radix_r(self) -> List[int]:
         """
-        Given a secp256k1 scalar field element in Montgomery form, this routine computes
+        Given a secp256k1 base field element in Montgomery form, this routine computes
         it in radix-r form | r = 2^32
         """
         return from_montgomery(self._limbs)
 
     def __eq__(self, rhs: Self) -> bool:
-        """
-        Checks equality of two elements of secp256k1 scalar field, when they're
-        kept in their Montgomery form
-        """
         tmp = [bool(self._limbs[i] ^ rhs._limbs[i]) for i in range(LIMB_COUNT)]
         return not reduce(lambda acc, cur: acc | cur, tmp, False)
 
     def __mul__(self, rhs: Self) -> Self:
         """
-        Modular multiplication of two secp256k1 scalar field elements, input/ output
+        Modular multiplication of two secp256k1 base field elements, input/ output
         expected to be in Montgomery form
         """
-        return ScalarField(montgomery_mul(self._limbs, rhs._limbs))
+        return BaseField(montgomery_mul(self._limbs, rhs._limbs))
 
     def __add__(self, rhs: Self) -> Self:
         """
-        Modular addition of two secp256k1 scalar field elements, input/ output in Montgomery form
+        Modular addition of two secp256k1 base field elements, input/ output in Montgomery form
         """
         c = [0] * LIMB_COUNT
         carry = 0
@@ -74,19 +70,16 @@ class ScalarField:
         c[6], carry = adc(self._limbs[6], rhs._limbs[6], carry)
         c[7], carry = adc(self._limbs[7], rhs._limbs[7], carry)
 
-        c[0] += carry * 801750719
-        c[1] += carry * 1076732275
-        c[2] += carry * 1354194884
-        c[3] += carry * 1162945305
-        c[4] += carry
+        c[0] += carry * 977
+        c[1] += carry
 
-        return ScalarField(c)
+        return BaseField(c)
 
     def __neg__(self) -> Self:
         """
-        Negates a secp256k1 scalar element such that a + b = 0, if b = -a
+        Negates a secp256k1 field element such that a + b = 0, if b = -a
         """
-        P_ = to_radix_r(N)
+        P_ = to_radix_r(P)
 
         c = [0] * LIMB_COUNT
         borrow = 0
@@ -100,17 +93,17 @@ class ScalarField:
         c[6], borrow = sbb(P_[6], self._limbs[6], borrow)
         c[7], _ = sbb(P_[7], self._limbs[7], borrow)
 
-        return ScalarField(c)
+        return BaseField(c)
 
     def __sub__(self, rhs: Self) -> Self:
         """
-        Modular subtraction of two secp256k1 scalar field elements, input/ output in Montgomery form
+        Modular subtraction of two secp256k1 base field elements, input/ output in Montgomery form
         """
         return self + (-rhs)
 
     def inv(self) -> Self:
         """
-        Computes multiplicative inverse of a secp256k1 scalar field element. If operand is 0,
+        Computes multiplicative inverse of a secp256k1 base field element. If operand is 0,
         returns 0, because it's not possible to compute multiplicative inverse of zero element.
         """
 
@@ -126,13 +119,13 @@ class ScalarField:
 
             return res
 
-        return ScalarField(pow(self._limbs, to_radix_r(N - 2)))
+        return BaseField(pow(self._limbs, to_radix_r(P - 2)))
 
     def __repr__(self) -> str:
         """
         Pretty print on console
         """
-        return f"Fp({self.to_num()}, {N})"
+        return f"Fp({self.to_num()}, {P})"
 
     def __str__(self) -> str:
         """
@@ -142,4 +135,4 @@ class ScalarField:
 
 
 if __name__ == "__main__":
-    print("Use `scalar_field` as library module")
+    print("Use `base_field` as library module")

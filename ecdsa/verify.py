@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
 from typing import Tuple
-from scalar_field_consts import Gx, Gy, N
-from base_field import BaseField
-from scalar_field import ScalarField
+from field import Gx, Gy, N
+from field import BaseField
+from field import ScalarField
 from point import Point
 from hashlib import sha3_256
 

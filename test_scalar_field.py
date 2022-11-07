@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
-from scalar_field import ScalarField
-from scalar_field_consts import N
+from field import ScalarField, N
 from random import randint
 
 # execute test cases for these many rounds

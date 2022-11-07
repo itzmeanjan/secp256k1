@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from base_field_consts import *
+from .base_field_consts import *
 from typing import List, Tuple
 
 

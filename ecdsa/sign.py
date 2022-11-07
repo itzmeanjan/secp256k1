@@ -3,11 +3,11 @@
 
 from typing import Tuple
 from hashlib import sha3_256
-from base_field import BaseField
-from scalar_field import ScalarField
+from field import BaseField
+from field import ScalarField
 from point import Point
 from secrets import randbelow
-from scalar_field_consts import Gx, Gy, N
+from field import Gx, Gy, N
 
 
 def sign(skey: int, msg: bytes) -> Tuple[int, int]:

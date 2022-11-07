@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
 from typing import Tuple
-from scalar_field_consts import Gx, Gy, N
+from field import Gx, Gy, N
 from point import Point
-from base_field import BaseField
+from field import BaseField
 from secrets import randbelow
 
 

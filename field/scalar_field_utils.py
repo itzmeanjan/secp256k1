@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from scalar_field_consts import *
+from .scalar_field_consts import *
 from typing import List, Tuple
 
 

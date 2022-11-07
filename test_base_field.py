@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
-from base_field import BaseField
-from base_field_consts import P
+from field import BaseField, P
 from random import randint
 
 # execute test cases for these many rounds
