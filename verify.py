@@ -3,6 +3,7 @@
 from typing import Tuple
 from scalar_field_consts import Gx, Gy, N
 from base_field import BaseField
+from scalar_field import ScalarField
 from point import Point
 from hashlib import sha3_256
 
@@ -22,20 +23,26 @@ def verify(pkey: Point, msg: bytes, sig: Tuple[int, int]) -> bool:
     h = int.from_bytes(h, byteorder="big")
     h = h % N
 
-    s1 = pow(s, -1, N)
+    s1 = ScalarField.from_num(s).inv()
 
-    t0 = (h * s1) % N
-    t1 = (r * s1) % N
+    t0 = ScalarField.from_num(h)
+    t1 = ScalarField.from_num(r)
+
+    t2 = t0 * s1
+    t3 = t1 * s1
+
+    t4 = t2.to_num()
+    t5 = t3.to_num()
 
     g = Point.fromAffine(BaseField.from_num(Gx), BaseField.from_num(Gy))
 
-    t2 = g.mulScalar(t0)
-    t3 = pkey.mulScalar(t1)
+    t6 = g.mulScalar(t4)
+    t7 = pkey.mulScalar(t5)
 
-    t4 = t2 + t3
-    t5 = t4.toAffine()[0].to_num()
+    t8 = t6 + t7
+    t9 = t8.toAffine()[0].to_num()
 
-    return r == t5
+    return r == t9
 
 
 if __name__ == "__main__":
