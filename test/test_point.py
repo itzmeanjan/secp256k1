@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-from point import Point
-from field import BaseField, Gx, Gy
+from . import Point
+from . import BaseField, Gx, Gy
 from random import randint
 
 # execute test cases for these many rounds
@@ -47,7 +47,3 @@ def test_point_doubling():
         c = a.double()
 
         assert b == c, f"expected {b}, found {c}"
-
-
-if __name__ == "__main__":
-    print("Use `pytest` to run test cases")

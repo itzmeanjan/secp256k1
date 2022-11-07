@@ -30,6 +30,3 @@ R: int = (RADIX**LIMB_COUNT) % P
 # = (2 ^ 256) ^ 2 % p
 R2: int = (R * R) % P
 MU: int = calculate_mu()
-
-if __name__ == "__main__":
-    print("Use `base_field_consts` as library module")

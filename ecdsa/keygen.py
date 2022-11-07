@@ -36,7 +36,3 @@ def keygen() -> Tuple[int, Point]:
     pkey = generate_public_key(skey)
 
     return skey, pkey
-
-
-if __name__ == "__main__":
-    print("Use `keygen` as library module")

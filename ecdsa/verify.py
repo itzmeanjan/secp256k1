@@ -43,7 +43,3 @@ def verify(pkey: Point, msg: bytes, sig: Tuple[int, int]) -> bool:
     t9 = t8.toAffine()[0].to_num()
 
     return r == t9
-
-
-if __name__ == "__main__":
-    print("Use `verify` as library module")

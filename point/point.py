@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from typing_extensions import Self
-from field import BaseField
+from . import BaseField
 from typing import Tuple
 
 
@@ -184,7 +184,3 @@ class Point:
             idx += 1
 
         return res
-
-
-if __name__ == "__main__":
-    print("Use `point` as library module")

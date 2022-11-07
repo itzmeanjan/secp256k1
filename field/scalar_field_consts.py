@@ -35,6 +35,3 @@ R: int = (RADIX**LIMB_COUNT) % N
 # = (2 ^ 256) ^ 2 % n
 R2: int = (R * R) % N
 MU: int = calculate_mu()
-
-if __name__ == "__main__":
-    print("Use `scalar_field_consts` as library module")

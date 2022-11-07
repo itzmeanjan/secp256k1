@@ -242,7 +242,3 @@ def from_montgomery(a: List[int]) -> List[int]:
     Read section 2.2 of https://eprint.iacr.org/2017/1057.pdf
     """
     return montgomery_mul(a, to_radix_r(1))
-
-
-if __name__ == "__main__":
-    print("Use `scalar_field_utils` as library module")

@@ -14,7 +14,3 @@ def test_ecdsa():
     verified = ecdsa.verify(pkey, msg, (r, s))
 
     assert verified, "ECDSA signature verification failed"
-
-
-if __name__ == "__main__":
-    print("Use `pytest` to run test cases")

@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from field import BaseField, P
+from . import BaseField, P
 from random import randint
 
 # execute test cases for these many rounds
@@ -89,7 +89,3 @@ def test_base_field_inversion():
         b = fp_b.to_num()
 
         assert b == 1, f"expected 1, found {b}"
-
-
-if __name__ == "__main__":
-    print("Use `pytest` to run test cases")

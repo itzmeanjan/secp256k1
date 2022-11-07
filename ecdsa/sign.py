@@ -38,7 +38,3 @@ def sign(skey: int, msg: bytes) -> Tuple[int, int]:
     s = t4.to_num()
 
     return r, s
-
-
-if __name__ == "__main__":
-    print("Use `sign` as library module")

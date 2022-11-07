@@ -132,7 +132,3 @@ class BaseField:
         Display when printed to stdout/ file
         """
         return str(self.to_num())
-
-
-if __name__ == "__main__":
-    print("Use `base_field` as library module")
