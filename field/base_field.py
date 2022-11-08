@@ -70,8 +70,18 @@ class BaseField:
         c[6], carry = adc(self._limbs[6], rhs._limbs[6], carry)
         c[7], carry = adc(self._limbs[7], rhs._limbs[7], carry)
 
-        c[0] += carry * 977
-        c[1] += carry
+        one = [977, 1, 0, 0, 0, 0, 0, 0]
+        one = [i * carry for i in one]
+
+        carry = 0
+        c[0], carry = adc(c[0], one[0], carry)
+        c[1], carry = adc(c[1], one[1], carry)
+        c[2], carry = adc(c[2], one[2], carry)
+        c[3], carry = adc(c[3], one[3], carry)
+        c[4], carry = adc(c[4], one[4], carry)
+        c[5], carry = adc(c[5], one[5], carry)
+        c[6], carry = adc(c[6], one[6], carry)
+        c[7], _ = adc(c[7], one[7], carry)
 
         return BaseField(c)
 

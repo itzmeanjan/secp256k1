@@ -216,11 +216,18 @@ def montgomery_mul(a: List[int], b: List[int]) -> List[int]:
     c[14], carry = mac(c[14], q, prime[7], carry)
     c[15], pc = adc(c[15], pc, carry)
 
-    c[8] += pc * 801750719
-    c[9] += pc * 1076732275
-    c[10] += pc * 1354194884
-    c[11] += pc * 1162945305
-    c[12] += pc
+    one = [801750719, 1076732275, 1354194884, 1162945305, 1, 0, 0, 0]
+    one = [i * pc for i in one]
+
+    carry = 0
+    c[8], carry = adc(c[8], one[0], carry)
+    c[9], carry = adc(c[9], one[1], carry)
+    c[10], carry = adc(c[10], one[2], carry)
+    c[11], carry = adc(c[11], one[3], carry)
+    c[12], carry = adc(c[12], one[4], carry)
+    c[13], carry = adc(c[13], one[5], carry)
+    c[14], carry = adc(c[14], one[6], carry)
+    c[15], _ = adc(c[15], one[7], carry)
 
     return c[8:16]
 
